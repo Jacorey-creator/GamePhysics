@@ -28,4 +28,16 @@ public class KinematicController : MonoBehaviour
 
         transform.Translate(direction * speed * Time.deltaTime, space);
     }
+    //RGB
+    //XYZ
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(transform.position, transform.forward);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, transform.right);
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position, transform.up);
+    }
 }

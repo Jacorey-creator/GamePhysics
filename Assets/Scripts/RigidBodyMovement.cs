@@ -10,6 +10,7 @@ public class RigidBodyMovement : MonoBehaviour
     [SerializeField] Vector3 torqe;
     [SerializeField] ForceMode mode;
     [SerializeField] ForceMode torqeMode;
+    [SerializeField] KeyCode jumpKey;
 
     void Start()
     {
@@ -19,10 +20,20 @@ public class RigidBodyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(jumpKey))
+        {
+            rb.AddForce(Vector3.up, ForceMode.Impulse);
+        }
+    }
+
+    private void FixedUpdate()
+    {
         if (Input.GetKey(KeyCode.Space)) 
         {
             rb.AddForce(force, mode);
             rb.AddTorque(torqe, torqeMode);
         }
     }
+
+
 }
