@@ -12,10 +12,38 @@
     <ClCompile Include="src\main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\body.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Force.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\editor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Spring.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\collision.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contact.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Body.h" />
     <ClInclude Include="src\mathf.h" />
     <ClInclude Include="src\world.h" />
+    <ClInclude Include="src\integrator.h" />
+    <ClInclude Include="src\Force.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Spring.h" />
+    <ClInclude Include="src\editor.h" />
+    <ClInclude Include="src\render.h" />
+    <ClInclude Include="src\collision.h" />
+    <ClInclude Include="src\contact.h" />
   </ItemGroup>
 </Project>
