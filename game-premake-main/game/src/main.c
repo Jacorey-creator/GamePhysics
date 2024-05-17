@@ -46,14 +46,14 @@ int main(void)
 		}
 		if (!ncEditorIntersect)
 		{
-			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+			if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) || IsMouseButtonDown(MOUSE_BUTTON_LEFT) && IsKeyDown(KEY_LEFT_SHIFT))
 			{
 				nc_Body* body = CreateBody(ConvertScreenToWorld(m_position), nc_EditorData.MassValue, nc_EditorData.BodyType);
 
 				body->damping = nc_EditorData.DampenValue;
 				body->gravityScale = nc_EditorData.BodyGravityValue;
 				body->color = ColorFromHSV(GetRandomFloatValue02(0, 360), 1, 1);
-
+				body->restitution = 0.8f;
 				AddBody(body);
 			}
 			//Connect Spring
@@ -82,6 +82,8 @@ int main(void)
 		//Collision
 		nc_Contact_t* contacts = NULL;
 		CreateContacts(nc_Bodies, &contacts);
+		SeparateContacts(contacts);
+		//ResolveContacts(contacts);
 
 		//Render
 		BeginDrawing();

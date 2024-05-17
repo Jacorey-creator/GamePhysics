@@ -10,7 +10,7 @@
 
 bool Intersects(nc_Body* body1, nc_Body* body2)
 {
-//if distance < radius
+	//if distance < radius
 	float distance = Vector2Distance(body1->position, body2->position);
 	float radius = body1->mass + body2->mass;
 
@@ -26,7 +26,7 @@ void CreateContacts(nc_Body* bodies, nc_Contact_t** contacts)
 		{
 			if (body1 == body2) continue;
 			if (body1->type != BT_DYNAMIC && body2->type != BT_DYNAMIC) continue;
-			if (Intersects(body1, body2)) 
+			if (Intersects(body1, body2))
 			{
 				nc_Contact_t* contact = GenerateContact(body1, body2);
 				AddContact(contact, contacts);
@@ -58,10 +58,35 @@ nc_Contact_t* GenerateContact(nc_Body* body1, nc_Body* body2)
 
 void SeparateContacts(nc_Contact_t* contacts)
 {
+	// Loop through each contact in the list of contacts
+	for (nc_Contact_t* contact = contacts; contact; contact = contact->next)
+	{
+		// Calculate the total inverse mass of the bodies involved in the contact
+		float totalInverseMass = contact->body1->imass + contact->body2->imass;
 
+		// Calculate the separation vector based on the contact normal and depth
+		Vector2 separation = Vector2Scale(contact->normal, (contact->depth / totalInverseMass));
+
+		// Move the first body based on its inverse mass and the separation vector
+		contact->body1->position = Vector2Add(contact->body1->position, Vector2Scale(separation, contact->body1->imass));
+
+		// Move the second body based on its inverse mass and the negated separation vector
+		contact->body2->position = Vector2Add(contact->body2->position, Vector2Scale(separation, -contact->body2->imass));
+	}
 }
 
 void ResolveContacts(nc_Contact_t* contacts)
 {
+	for (nc_Contact_t* contact = contacts; contact; contact = contact->next)
+	{
+		Vector2 relativeVelocity = Vector2Subtract(contact->body1->velocity, contact->body2->velocity);
+		float normalVelocity = Vector2DotProduct(relativeVelocity, contact->normal);
 
+		if (normalVelocity > 0) continue;
+		float totalInverseMass = contact->body1->imass + contact->body2->imass;
+		float impulseMagnitude = -(1 + contact->restitution) * normalVelocity / totalInverseMass;
+		Vector2 impulse = Vector2Scale(contact->normal, impulseMagnitude);
+		AppliedForce(contact->body1, impulse, FM_IMPULSE);
+		AppliedForce(contact->body2, Vector2Negate(impulse), FM_IMPULSE);
+	}
 }

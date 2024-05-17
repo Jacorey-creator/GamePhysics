@@ -49,7 +49,7 @@ inline void AppliedForce(nc_Body* body, Vector2 force, nc_ForceMode forceMode)
 		break;
 	case FM_IMPULSE:
 		//sudden change in velocity "momentum"
-		body->velocity = Vector2Scale(force, body->imass);
+		body->velocity = Vector2Add(body->velocity,Vector2Scale(force, body->imass));
 		break;
 	case FM_VELOCITY:
 		body->velocity = force;
